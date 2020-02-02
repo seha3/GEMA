@@ -43,9 +43,6 @@ class RickAndMorty extends React.Component {
     render() {
         return (
             <React.Fragment>
-                <header>
-                    <h1 className="heading">Rick <span>And</span> Morty</h1>
-                </header>
                 <main>
                     <SearchInput handleSearchInput={ e => this.handleSearchInput(e.target.value.replace(" ", "+")) } />
                     { this.state.searching ? <div className="search-loader" /> : null }
