@@ -1,5 +1,6 @@
-import React from 'react'
 
+import React from 'react'
+import SearchInput from './SearchInput'
 class RickAndMorty extends React.Component {
 
     state = {
@@ -54,14 +55,7 @@ class RickAndMorty extends React.Component {
     }
 }
 
-function SearchInput({ handleSearchInput }) {
-    return (
-        <div className="search">
-            <label htmlFor="search-input" className="search-input-label">Character Search:</label>
-            <input type="text" id="search-input" className="search-input" placeholder="e.g. 'Rick'" spellCheck="false" onChange={ handleSearchInput } />
-        </div>
-    );
-}
+
 
 function SearchOutput({ characters, firstCharacterRef }) {
     return (
