@@ -1,6 +1,6 @@
 import React from 'react'
 
-class RickAndMorty extends React.Component {
+class searchEpisode extends React.Component {
 
     state = {
         page: 1,
@@ -8,27 +8,27 @@ class RickAndMorty extends React.Component {
         searchTerm: '',
         searching: false,
         searched: false,
-        characters: []
+        episodes: []
     }
 
-    firstCharacterRef = React.createRef(); // createRef, debounce
+    firstEpisodeRef = React.createRef(); // createRef, debounce
 
-    handleSearchInput = debounce(searchTerm => this.setState({ page: 1, searchTerm, searching: true }, this.fetchCharacters));
+    handleSearchInput = debounce(searchTerm => this.setState({ page: 1, searchTerm, searching: true }, this.fetchEpisodes));
 
-    fetchCharacters = () => {
-        fetch(`https://rickandmortyapi.com/api/character/?page=${this.state.page}&name=${this.state.searchTerm}`)
+    fetchEpisodes = () => {
+        fetch(`https://rickandmortyapi.com/api/episode/?page=${this.state.page}&name=${this.state.searchTerm}`)
             .then(res => res.json())
             .then(data => this.setState({
                 totalPages: data.info.pages,
-                characters: data.results,
+                episodes: data.results,
                 searching: false,
                 searched: true
             }))
-            .then(() => this.firstCharacterRef.current.focus())
+            .then(() => this.firstEpisodeRef.current.focus())
             .catch(() => this.setState({
                 page: 1,
                 totalPages: 1,
-                characters: [],
+                episodes: [],
                 searching: false,
                 searched: true
             }));
@@ -36,20 +36,17 @@ class RickAndMorty extends React.Component {
 
     changePage = e => {
         Array.from(e.target.classList).includes('page-btn-next') ?
-            this.setState(prevState => ({ page: prevState.page + 1 }), this.fetchCharacters) :
-            this.setState(prevState => ({ page: prevState.page - 1 }), this.fetchCharacters);
+            this.setState(prevState => ({ page: prevState.page + 1 }), this.fetchEpisodes) :
+            this.setState(prevState => ({ page: prevState.page - 1 }), this.fetchEpisodes);
     }
 
     render() {
         return (
             <React.Fragment>
-                <header>
-                    <h1 className="heading">Rick <span>And</span> Morty</h1>
-                </header>
                 <main>
                     <SearchInput handleSearchInput={ e => this.handleSearchInput(e.target.value.replace(" ", "+")) } />
                     { this.state.searching ? <div className="search-loader" /> : null }
-                    { this.state.searched && !this.state.searching ? <SearchOutput characters={ this.state.characters } firstCharacterRef={ this.firstCharacterRef } /> : null }
+                    { this.state.searched && !this.state.searching ? <SearchOutput episodes={ this.state.episodes } firstEpisodeRef={ this.firstEpisodeRef } /> : null }
                     { this.state.totalPages > 1 && !this.state.searching ? <PageNavigation page={ this.state.page } totalPages={ this.state.totalPages } changePage={ this.changePage } /> : null }
                 </main>
             </React.Fragment>
@@ -60,29 +57,29 @@ class RickAndMorty extends React.Component {
 function SearchInput({ handleSearchInput }) {
     return (
         <div className="search">
-            <label htmlFor="search-input" className="search-input-label">Character Search:</label>
-            <input type="text" id="search-input" className="search-input" placeholder="e.g. 'Rick'" spellCheck="false" onChange={ handleSearchInput } />
+            <label htmlFor="search-input" className="search-input-label">Episode Search:</label>
+            <input type="text" id="search-input" className="search-input" placeholder="e.g. 'Pilot'" spellCheck="false" onChange={ handleSearchInput } />
         </div>
     );
 }
 
-function SearchOutput({ characters, firstCharacterRef }) {
+function SearchOutput({ episodes, firstEpisodeRef }) {
     return (
         <div className="search-output">
             {
-                characters.length > 0 ?
-                    characters.map((character, index) => <Character character={ character } key={ character.id } index={ index } firstCharacterRef={ firstCharacterRef } />) :
+                episodes.length > 0 ?
+                    episodes.map((episode, index) => <Episode episode={ episode } key={ episode.id } index={ index } firstEpisodeRef={ firstEpisodeRef } />) :
                     <p className="no-results">No Results Found</p>
             }
         </div>
     );
 }
 
-function Character({ character, firstCharacterRef, index }) {
+function Episode({ episode, firstEpisodeRef, index }) {
     return (
         <details className="character-details" >
 
-            <summary className="character-summary" ref={ index === 0 ? firstCharacterRef : null }>{ character.name }</summary>
+            <summary className="character-summary" ref={ index === 0 ? firstEpisodeRef : null }>{ episode.name }</summary>
 
             <div className="character-container">
 
@@ -90,28 +87,19 @@ function Character({ character, firstCharacterRef, index }) {
 
                     <details className="character-info-item" open>
                         <summary className="character-info-item-summary">Name</summary>
-                        <p className="character-info-item-data">{ character.name }</p>
+                        <p className="character-info-item-data">{ episode.name }</p>
                     </details>
 
                     <details className="character-info-item" open>
-                        <summary className="character-info-item-summary">Species</summary>
-                        <p className="character-info-item-data">{ character.species }</p>
+                        <summary className="character-info-item-summary">Air Date</summary>
+                        <p className="character-info-item-data">{ episode.air_date }</p>
                     </details>
 
                     <details className="character-info-item" open>
-                        <summary className="character-info-item-summary">Gender</summary>
-                        <p className="character-info-item-data">{ character.gender }</p>
+                        <summary className="character-info-item-summary">Episode</summary>
+                        <p className="character-info-item-data">{ episode.episode }</p>
                     </details>
 
-                    <details className="character-info-item" open>
-                        <summary className="character-info-item-summary">Location</summary>
-                        <p className="character-info-item-data">{ character.location.name }</p>
-                    </details>
-
-                </div>
-
-                <div className="character-image-container">
-                    <img className="character-image" src={ character.image } alt={ character.name } />
                 </div>
 
             </div>
@@ -151,4 +139,4 @@ function debounce(func, wait = 800) {
 }
 
 
-export default RickAndMorty
+export default searchEpisode
