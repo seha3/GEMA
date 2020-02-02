@@ -19,10 +19,10 @@ function App () {
         <div>
           <nav>
             <div>
-              <Link to='/characters' className='heading2'>Search</Link>
+              <Link to='/characters' className='heading2'>Search Character</Link>
             </div>
             <div>
-              <Link to='/episodes' className='heading2'>SearchEpisode</Link>
+              <Link to='/episodes' className='heading2'>Search Episode</Link>
             </div>
           </nav>
         </div>
